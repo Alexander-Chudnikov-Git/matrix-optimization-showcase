@@ -29,15 +29,6 @@ volatile void matrix_add_sub_unoptimized(const std::vector<float>& A, const std:
     }
 }
 
-// Compiler-optimized matrix addition and subtraction
-void matrix_add_sub_optimized(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C)
-{
-    for (int i = 0; i < MATRIX_SIZE * MATRIX_SIZE; ++i)
-    {
-        C[i] = A[i] + B[i] - B[i];
-    }
-}
-
 // SIMD-optimized matrix addition and subtraction
 #ifdef USE_SIMD
 void matrix_add_sub_simd(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C)
@@ -86,7 +77,7 @@ int main()
 
     #ifdef MAX_OPTIMIZATION
     // Measure time for compiler-optimized version
-    measure_time("Compiler Optimized", matrix_add_sub_optimized, A, B, C);
+    measure_time("Compiler Optimized", matrix_add_sub_unoptimized, A, B, C);
     #endif
 
     #ifdef USE_SIMD
