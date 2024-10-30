@@ -11,30 +11,37 @@
 const int MATRIX_SIZE = 10240;
 
 // Function to initialize matrices with random values
-void initialize_matrices(std::vector<float>& A, std::vector<float>& B) {
-    for (int i = 0; i < MATRIX_SIZE * MATRIX_SIZE; ++i) {
+void initialize_matrices(std::vector<float>& A, std::vector<float>& B)
+{
+    for (int i = 0; i < MATRIX_SIZE * MATRIX_SIZE; ++i)
+    {
         A[i] = static_cast<float>(rand()) / RAND_MAX;
         B[i] = static_cast<float>(rand()) / RAND_MAX;
     }
 }
 
 // Unoptimized matrix addition and subtraction
-volatile void matrix_add_sub_unoptimized(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C) {
-    for (int i = 0; i < MATRIX_SIZE * MATRIX_SIZE; ++i) {
+volatile void matrix_add_sub_unoptimized(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C)
+{
+    for (int i = 0; i < MATRIX_SIZE * MATRIX_SIZE; ++i)
+    {
         C[i] = A[i] + B[i] - B[i];
     }
 }
 
 // Compiler-optimized matrix addition and subtraction
-void matrix_add_sub_optimized(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C) {
-    for (int i = 0; i < MATRIX_SIZE * MATRIX_SIZE; ++i) {
+void matrix_add_sub_optimized(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C)
+{
+    for (int i = 0; i < MATRIX_SIZE * MATRIX_SIZE; ++i)
+    {
         C[i] = A[i] + B[i] - B[i];
     }
 }
 
 // SIMD-optimized matrix addition and subtraction
 #ifdef USE_SIMD
-void matrix_add_sub_simd(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C) {
+void matrix_add_sub_simd(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C)
+{
     int i = 0;
     for (; i <= MATRIX_SIZE * MATRIX_SIZE - 8; i += 8)
     {
@@ -46,14 +53,16 @@ void matrix_add_sub_simd(const std::vector<float>& A, const std::vector<float>& 
         _mm256_storeu_ps(&C[i], result);
     }
 
-    for (; i < MATRIX_SIZE * MATRIX_SIZE; ++i) {
+    for (; i < MATRIX_SIZE * MATRIX_SIZE; ++i)
+    {
         C[i] = A[i] + B[i] - B[i];
     }
 }
 #endif
 
 template <typename Func>
-void measure_time(const std::string& label, Func func, const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C) {
+void measure_time(const std::string& label, Func func, const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C)
+{
     auto start = std::chrono::high_resolution_clock::now();
     func(A, B, C);
     auto end = std::chrono::high_resolution_clock::now();
@@ -61,7 +70,8 @@ void measure_time(const std::string& label, Func func, const std::vector<float>&
     std::cout << label << " time: " << elapsed.count() << " seconds.\n";
 }
 
-int main() {
+int main()
+{
     // Initialize matrices
     std::vector<float> A(MATRIX_SIZE * MATRIX_SIZE);
     std::vector<float> B(MATRIX_SIZE * MATRIX_SIZE);
