@@ -43,9 +43,9 @@ Results for execution time in seconds for each build target are as follows:
 
 | Optimization Level       | Execution Time (s) |
 |--------------------------|--------------------|
-| Unoptimized              | 0.487367           |
-| Compiler Optimized       | 0.0675439          |
-| SIMD Optimized           | 0.0564953          |
+| Unoptimized              | 0.909173           |
+| Compiler Optimized       | 0.148630           |
+| SIMD Optimized           | 0.136283           |
 
 ## Conclusion
 This project illustrates the significant performance gains achievable through compiler optimizations and manual SIMD vectorization using AVX2 instructions. The SIMD-optimized version achieved an 8.63x speedup compared to the unoptimized version.
