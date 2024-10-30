@@ -17,8 +17,8 @@ This project was tested and proven to work with the following setup:
 ### Step 1: Clone the Repository
 Clone the repository to your local machine:
 ```bash
-git clone [repository_url]
-cd [repository_directory]
+git clone https://github.com/Alexander-Chudnikov-Git/matrix-optimization-showcase.git
+cd ./matrix-optimization-showcase
 ```
 
 ### Step 2: Compile the Project
