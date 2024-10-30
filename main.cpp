@@ -4,11 +4,11 @@
 #include <cstdlib>
 
 #ifdef USE_SIMD
-#include <immintrin.h> // for AVX2 intrinsics
+#include <immintrin.h>
 #endif
 
 // Define the matrix size
-const int MATRIX_SIZE = 10240; // Adjust as needed
+const int MATRIX_SIZE = 10240;
 
 // Function to initialize matrices with random values
 void initialize_matrices(std::vector<float>& A, std::vector<float>& B) {
@@ -36,25 +36,22 @@ void matrix_add_sub_optimized(const std::vector<float>& A, const std::vector<flo
 #ifdef USE_SIMD
 void matrix_add_sub_simd(const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C) {
     int i = 0;
-    for (; i <= MATRIX_SIZE * MATRIX_SIZE - 8; i += 8) {
-        // Load data from A and B with AVX2 intrinsics
+    for (; i <= MATRIX_SIZE * MATRIX_SIZE - 8; i += 8)
+    {
         __m256 a = _mm256_loadu_ps(&A[i]);
         __m256 b = _mm256_loadu_ps(&B[i]);
 
-        // Perform addition and subtraction
         __m256 result = _mm256_sub_ps(_mm256_add_ps(a, b), b);
 
-        // Store the result back in C
         _mm256_storeu_ps(&C[i], result);
     }
-    // Handle the remainder of the matrix if MATRIX_SIZE is not a multiple of 8
+
     for (; i < MATRIX_SIZE * MATRIX_SIZE; ++i) {
         C[i] = A[i] + B[i] - B[i];
     }
 }
 #endif
 
-// Helper function to measure execution time of each function
 template <typename Func>
 void measure_time(const std::string& label, Func func, const std::vector<float>& A, const std::vector<float>& B, std::vector<float>& C) {
     auto start = std::chrono::high_resolution_clock::now();
